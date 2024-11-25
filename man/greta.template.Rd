@@ -16,12 +16,12 @@ describe your package here, you can re-use the text from DESCRIPTION
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/your_username/your_repository}
-  \item Report bugs at \url{https://github.com/your_username/your_repository/issues}
+  \item \url{https://github.com/mtwesley/greta.censored}
+  \item Report bugs at \url{https://github.com/mtwesley/greta.censored/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Mlen-Too Wesley \email{mlen.too.wesley@gmail.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
