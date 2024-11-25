@@ -48,7 +48,7 @@ jobs:
 
       - name: Install Homebrew (macOS only)
         if: runner.os == 'macOS'
-        uses: Homebrew/actions/setup-homebrew@v2
+        uses: Homebrew/actions/setup-homebrew@master
 
       - name: Install qpdf (macOS only)
         if: runner.os == 'macOS'
