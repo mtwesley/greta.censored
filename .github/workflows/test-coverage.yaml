@@ -1,87 +1,84 @@
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
   pull_request:
-    branches:
-      - main
-      - master
+    branches: [main, master]
 
 name: test-coverage
 
+permissions: read-all
+
 jobs:
   test-coverage:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
-      - uses: actions/checkout@v4  # Updated Node.js version
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "release"
+          use-public-rspm: true
 
-      - uses: r-lib/actions/setup-pandoc@v2
-
-      - name: Query dependencies
-        run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
-        shell: Rscript {0}
-
-      - name: Restore R package cache
-        uses: actions/cache@v3
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          extra-packages: |
+            any::covr
+            any::xml2
+            any::remotes
 
-      - name: Install dependencies
+      - name: Install system dependencies
+        shell: bash
         run: |
-          install.packages(c("remotes"))
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("covr")
+          . /etc/os-release
+          while read -r cmd
+          do
+            echo "$cmd"
+            sudo $cmd
+          done < <(Rscript -e "writeLines(remotes::system_requirements('$ID-$VERSION_ID'))")
+
+      - name: Install package + deps
+        run: remotes::install_local(dependencies = TRUE, force = TRUE)
         shell: Rscript {0}
 
-      - name: Install Miniconda
+      - name: Install greta deps
         run: |
-          install.packages(c("remotes", "keras"))
-          reticulate::install_miniconda()
+          library(greta)
+          greta::install_greta_deps(timeout = 50)
         shell: Rscript {0}
 
-      - name: Set options for conda binary for macOS
-        if: runner.os == 'macOS'
-        run: |
-          echo "options(reticulate.conda_binary = reticulate:::miniconda_conda())" >> .Rprofile
-
-      - name: Install TensorFlow
-        run: |
-          reticulate::conda_create(envname = "greta-env", python_version = "3.7")
-          reticulate::conda_install(envname = "greta-env", packages = c("numpy==1.16.4", "tensorflow-probability==0.7.0", "tensorflow==1.14.0"))
+      - name: Situation Report on greta install
+        run: greta::greta_sitrep()
         shell: Rscript {0}
-
-      - name: Update Homebrew
-        if: runner.os == 'macOS'
-        run: |
-          brew uninstall --force --ignore-dependencies qpdf || true
-          brew update
-          brew install qpdf
-
-      - name: Debug Homebrew Environment
-        if: runner.os == 'macOS'
-        run: |
-          brew doctor
-          brew config
-
-      - name: Python + TF details
-        run: |
-          Rscript -e 'tensorflow::tf_config()'
-          Rscript -e 'tensorflow::tf_version()'
-          Rscript -e 'reticulate::py_module_available("tensorflow_probability")'
-          Rscript -e 'reticulate::py_config()'
 
       - name: Test coverage
-        run: covr::codecov()
+        run: |
+          cov <- covr::package_coverage(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
+          )
+          covr::to_cobertura(cov)
         shell: Rscript {0}
+
+      - uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: ${{ github.event_name != 'pull_request' && true || false }}
+          file: ./cobertura.xml
+          plugin: noop
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package

@@ -1,0 +1,10 @@
+home:
+  title: greta.censored
+  description: Censored distributions for greta
+navbar:
+  structure:
+    left:
+      - text: Reference
+        href: reference/index.html
+      - text: Articles
+        href: articles/index.html
