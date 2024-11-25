@@ -17,7 +17,7 @@ normal_censored_distribution <- R6::R6Class(
   "normal_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(mean, sd, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(mean, sd, is_censored, censor, lower, upper, dim) {
       mean <- as.greta_array(mean)
       sd <- as.greta_array(sd)
       # is_censored <- check_param_greta_array(is_censored)
@@ -33,9 +33,9 @@ normal_censored_distribution <- R6::R6Class(
       self$add_parameter(mean, "mean")
       self$add_parameter(sd, "sd")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       mean <- parameters$mean
@@ -43,12 +43,12 @@ normal_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       norm_dist <- tfp$distributions$Normal(loc = mean, scale = sd)
 
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) norm_dist$log_survival_function(y),
         "left" = function(y) norm_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- norm_dist$log_cdf(self$upper)
-          log_cdf_lower <- norm_dist$log_cdf(self$lower)
+          log_cdf_upper <- norm_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- norm_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) norm_dist$log_prob(y)
@@ -71,7 +71,7 @@ lognormal_censored_distribution <- R6::R6Class(
   "lognormal_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(meanlog, sdlog, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(meanlog, sdlog, is_censored, censor, lower, upper, dim) {
       meanlog <- as.greta_array(meanlog)
       sdlog <- as.greta_array(sdlog)
       # is_censored <- check_param_greta_array(is_censored)
@@ -87,9 +87,9 @@ lognormal_censored_distribution <- R6::R6Class(
       self$add_parameter(meanlog, "meanlog")
       self$add_parameter(sdlog, "sdlog")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       meanlog <- parameters$meanlog
@@ -97,12 +97,12 @@ lognormal_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       lognorm_dist <- tfp$distributions$LogNormal(loc = meanlog, scale = sdlog)
 
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) lognorm_dist$log_survival_function(y),
         "left" = function(y) lognorm_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- lognorm_dist$log_cdf(self$upper)
-          log_cdf_lower <- lognorm_dist$log_cdf(self$lower)
+          log_cdf_upper <- lognorm_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- lognorm_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) lognorm_dist$log_prob(y)
@@ -125,7 +125,7 @@ student_censored_distribution <- R6::R6Class(
   "student_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(df, loc, scale, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(df, loc, scale, is_censored, censor, lower, upper, dim) {
       df <- as.greta_array(df)
       loc <- as.greta_array(loc)
       scale <- as.greta_array(scale)
@@ -143,9 +143,9 @@ student_censored_distribution <- R6::R6Class(
       self$add_parameter(loc, "loc")
       self$add_parameter(scale, "scale")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       df <- parameters$df
@@ -154,12 +154,12 @@ student_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       student_dist <- tfp$distributions$StudentT(df = df, loc = loc, scale = scale)
 
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) student_dist$log_survival_function(y),
         "left" = function(y) student_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- student_dist$log_cdf(self$upper)
-          log_cdf_lower <- student_dist$log_cdf(self$lower)
+          log_cdf_upper <- student_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- student_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) student_dist$log_prob(y)
@@ -182,7 +182,7 @@ gamma_censored_distribution <- R6::R6Class(
   "gamma_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(shape, rate, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(shape, rate, is_censored, censor, lower, upper, dim) {
       shape <- as.greta_array(shape)
       rate <- as.greta_array(rate)
       # is_censored <- check_param_greta_array(is_censored)
@@ -198,9 +198,9 @@ gamma_censored_distribution <- R6::R6Class(
       self$add_parameter(shape, "shape")
       self$add_parameter(rate, "rate")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       shape <- parameters$shape
@@ -208,12 +208,12 @@ gamma_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       gamma_dist <- tfp$distributions$Gamma(concentration = shape, rate = rate)
 
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) gamma_dist$log_survival_function(y),
         "left" = function(y) gamma_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- gamma_dist$log_cdf(self$upper)
-          log_cdf_lower <- gamma_dist$log_cdf(self$lower)
+          log_cdf_upper <- gamma_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- gamma_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) gamma_dist$log_prob(y)
@@ -236,7 +236,7 @@ exponential_censored_distribution <- R6::R6Class(
   "exponential_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(rate, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(rate, is_censored, censor, lower, upper, dim) {
       rate <- as.greta_array(rate)
       # is_censored <- check_param_greta_array(is_censored)
       # check_numeric_length_1(lower)
@@ -250,20 +250,20 @@ exponential_censored_distribution <- R6::R6Class(
       super$initialize("exponential_censored", dim)
       self$add_parameter(rate, "rate")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       rate <- parameters$rate
       is_censored <- parameters$is_censored
       exp_dist <- tfp$distributions$Exponential(rate = rate)
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) exp_dist$log_survival_function(y),
         "left" = function(y) exp_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- exp_dist$log_cdf(self$upper)
-          log_cdf_lower <- exp_dist$log_cdf(self$lower)
+          log_cdf_upper <- exp_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- exp_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) exp_dist$log_prob(y)
@@ -286,7 +286,7 @@ weibull_censored_distribution <- R6::R6Class(
   "weibull_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(shape, scale, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(shape, scale, is_censored, censor, lower, upper, dim) {
       shape <- as.greta_array(shape)
       scale <- as.greta_array(scale)
       # is_censored <- check_param_greta_array(is_censored)
@@ -302,9 +302,9 @@ weibull_censored_distribution <- R6::R6Class(
       self$add_parameter(shape, "shape")
       self$add_parameter(scale, "scale")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       shape <- parameters$shape
@@ -312,12 +312,12 @@ weibull_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       weibull_dist <- tfp$distributions$Weibull(concentration = shape, scale = scale)
 
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) weibull_dist$log_survival_function(y),
         "left" = function(y) weibull_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- weibull_dist$log_cdf(self$upper)
-          log_cdf_lower <- weibull_dist$log_cdf(self$lower)
+          log_cdf_upper <- weibull_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- weibull_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) weibull_dist$log_prob(y)
@@ -340,7 +340,7 @@ pareto_censored_distribution <- R6::R6Class(
   "pareto_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(scale, alpha, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(scale, alpha, is_censored, censor, lower, upper, dim) {
       scale <- as.greta_array(scale)
       alpha <- as.greta_array(alpha)
       # is_censored <- check_param_greta_array(is_censored)
@@ -356,9 +356,9 @@ pareto_censored_distribution <- R6::R6Class(
       self$add_parameter(scale, "scale")
       self$add_parameter(alpha, "alpha")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       scale <- parameters$scale
@@ -366,12 +366,12 @@ pareto_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       pareto_dist <- tfp$distributions$Pareto(concentration = alpha, scale = scale)
 
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) pareto_dist$log_survival_function(y),
         "left" = function(y) pareto_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- pareto_dist$log_cdf(self$upper)
-          log_cdf_lower <- pareto_dist$log_cdf(self$lower)
+          log_cdf_upper <- pareto_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- pareto_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) pareto_dist$log_prob(y)
@@ -394,7 +394,7 @@ beta_censored_distribution <- R6::R6Class(
   "beta_censored_distribution",
   inherit = distribution_node,
   public = list(
-    initialize = function(alpha, beta, is_censored, censoring_type, lower, upper, dim) {
+    initialize = function(alpha, beta, is_censored, censor, lower, upper, dim) {
       alpha <- as.greta_array(alpha)
       beta <- as.greta_array(beta)
       # is_censored <- check_param_greta_array(is_censored)
@@ -410,9 +410,9 @@ beta_censored_distribution <- R6::R6Class(
       self$add_parameter(alpha, "alpha")
       self$add_parameter(beta, "beta")
       self$add_parameter(is_censored, "is_censored")
-      self$censoring_type <- censoring_type
-      self$lower <- lower
-      self$upper <- upper
+      self$add_parameter(censor, "censor")
+      self$add_parameter(lower, "lower")
+      self$add_parameter(upper, "upper")
     },
     tf_distrib = function(parameters, dag) {
       alpha <- parameters$alpha
@@ -420,12 +420,12 @@ beta_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       beta_dist <- tfp$distributions$Beta(concentration1 = alpha, concentration0 = beta)
 
-      censored_log_prob <- switch(self$censoring_type,
+      censored_log_prob <- switch(parameters$censor,
         "right" = function(y) beta_dist$log_survival_function(y),
         "left" = function(y) beta_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- beta_dist$log_cdf(self$upper)
-          log_cdf_lower <- beta_dist$log_cdf(self$lower)
+          log_cdf_upper <- beta_dist$log_cdf(parameters$upper)
+          log_cdf_lower <- beta_dist$log_cdf(parameters$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) beta_dist$log_prob(y)
@@ -451,14 +451,14 @@ beta_censored_distribution <- R6::R6Class(
 #' @param mean Mean of the normal distribution.
 #' @param sd Standard deviation of the normal distribution.
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `mean`).
 #' @return A greta censored normal distribution node.
 #' @export
-normal_censored <- function(mean, sd, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(rate)) {
-  distrib("normal_censored", mean, sd, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+normal_censored <- function(mean, sd, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(rate)) {
+  distrib("normal_censored", mean, sd, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
 #' Log-Normal Censored Distribution
@@ -468,14 +468,14 @@ normal_censored <- function(mean, sd, is_censored, censoring_type = "right", low
 #' @param meanlog Mean of the log-transformed normal distribution.
 #' @param sdlog Standard deviation of the log-transformed normal distribution.
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `meanlog`).
 #' @return A greta censored log-normal distribution node.
 #' @export
-lognormal_censored <- function(meanlog, sdlog, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(meanlog)) {
-  distrib("lognormal_censored", meanlog, sdlog, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+lognormal_censored <- function(meanlog, sdlog, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(meanlog)) {
+  distrib("lognormal_censored", meanlog, sdlog, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
 #' Student's t Censored Distribution
@@ -486,14 +486,14 @@ lognormal_censored <- function(meanlog, sdlog, is_censored, censoring_type = "ri
 #' @param loc Location parameter (mean).
 #' @param scale Scale parameter.
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `df`).
 #' @return A greta censored Student's t distribution node.
 #' @export
-student_censored <- function(df, loc, scale, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(df)) {
-  distrib("student_censored", df, loc, scale, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+student_censored <- function(df, loc, scale, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(df)) {
+  distrib("student_censored", df, loc, scale, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
 #' Gamma Censored Distribution
@@ -503,14 +503,14 @@ student_censored <- function(df, loc, scale, is_censored, censoring_type = "righ
 #' @param shape Shape parameter of the gamma distribution.
 #' @param rate Rate parameter of the gamma distribution (reciprocal of scale).
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `shape`).
 #' @return A greta censored gamma distribution node.
 #' @export
-gamma_censored <- function(shape, rate, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(shape)) {
-  distrib("gamma_censored", shape, rate, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+gamma_censored <- function(shape, rate, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(shape)) {
+  distrib("gamma_censored", shape, rate, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
 #' Exponential Censored Distribution
@@ -519,14 +519,14 @@ gamma_censored <- function(shape, rate, is_censored, censoring_type = "right", l
 #'
 #' @param rate Rate parameter of the exponential distribution.
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `rate`).
 #' @return A greta censored exponential distribution node.
 #' @export
-exponential_censored <- function(rate, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(rate)) {
-  distrib("exponential_censored", rate, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+exponential_censored <- function(rate, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(rate)) {
+  distrib("exponential_censored", rate, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
 #' Weibull Censored Distribution
@@ -536,14 +536,14 @@ exponential_censored <- function(rate, is_censored, censoring_type = "right", lo
 #' @param shape Shape parameter of the Weibull distribution.
 #' @param scale Scale parameter of the Weibull distribution.
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `shape`).
 #' @return A greta censored Weibull distribution node.
 #' @export
-weibull_censored <- function(shape, scale, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(shape)) {
-  distrib("weibull_censored", shape, scale, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+weibull_censored <- function(shape, scale, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(shape)) {
+  distrib("weibull_censored", shape, scale, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
 #' Pareto Censored Distribution
@@ -553,14 +553,14 @@ weibull_censored <- function(shape, scale, is_censored, censoring_type = "right"
 #' @param scale Minimum value of the Pareto distribution.
 #' @param alpha Shape parameter of the Pareto distribution.
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `scale`).
 #' @return A greta censored Pareto distribution node.
 #' @export
-pareto_censored <- function(scale, alpha, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(scale)) {
-  distrib("pareto_censored", scale, alpha, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+pareto_censored <- function(scale, alpha, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(scale)) {
+  distrib("pareto_censored", scale, alpha, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
 #' Beta Censored Distribution
@@ -570,12 +570,12 @@ pareto_censored <- function(scale, alpha, is_censored, censoring_type = "right",
 #' @param alpha Shape parameter for successes.
 #' @param beta Shape parameter for failures.
 #' @param is_censored Logical vector indicating whether each observation is censored.
-#' @param censoring_type Type of censoring: one of 'right', 'left', 'interval'.
+#' @param censor Type of censoring: one of 'right', 'left', 'interval'.
 #' @param lower Lower bound for interval censoring (optional).
 #' @param upper Upper bound for interval censoring (optional).
 #' @param dim Dimension of the data (optional, defaults to length of `alpha`).
 #' @return A greta censored beta distribution node.
 #' @export
-beta_censored <- function(alpha, beta, is_censored, censoring_type = "right", lower = NULL, upper = NULL, dim = length(alpha)) {
-  distrib("beta_censored", alpha, beta, is_censored, censoring_type = censoring_type, lower = lower, upper = upper, dim = dim)
+beta_censored <- function(alpha, beta, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(alpha)) {
+  distrib("beta_censored", alpha, beta, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
