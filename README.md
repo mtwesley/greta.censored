@@ -1,7 +1,6 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# greta.template
+# Extend Greta with Censored Distributions
 
 <!-- badges: start -->
 <!-- once you've signed into travis and set it to wath your new repository, you can edit the following badges to point to your repo -->
