@@ -23,9 +23,7 @@ Depends:
 Imports: 
     cli,
     glue,
-    tensorflow (>= 1.14.0),
-    reticulate,
-    R6
+    tensorflow (>= 1.14.0)
 Suggests:
     devtools,
     covr,

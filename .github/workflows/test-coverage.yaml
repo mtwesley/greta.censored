@@ -46,6 +46,14 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-coverage-{{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-r-coverage-
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
@@ -56,6 +64,24 @@ jobs:
             any::rcmdcheck
             any::sessioninfo
             any::devtools
+
+      - name: Cache Python environment
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        uses: actions/cache@v3
+        with:
+          path: ~/.virtualenvs
+          key: ${{ runner.os }}-python-env-coverage-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-python-env-coverage-
+
+      - name: Cache Python environment (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/cache@v3
+        with:
+          path: '%LOCALAPPDATA%/r-reticulate'
+          key: ${{ runner.os }}-python-env-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-python-env-            
 
       - name: Install greta and dependencies
         shell: Rscript {0}
