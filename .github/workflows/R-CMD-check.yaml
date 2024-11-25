@@ -18,11 +18,7 @@ defaults:
 
 jobs:
   R-CMD-check:
-    name: >
-      ${{ matrix.os == 'ubuntu-latest' && 'Ubuntu' || 
-          matrix.os == 'windows-latest' && 'Windows' || 
-          matrix.os == 'macOS-latest' && 'MacOS' }}
-      (R-${{ matrix.r }})
+    name: ${{ matrix.os }}, R-${{ matrix.r}}
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -71,10 +67,11 @@ jobs:
           done < <(Rscript -e "writeLines(remotes::system_requirements('$ID-$VERSION_ID'))")
 
       - name: Install greta dependencies
-        run: |
-          install.packages("greta")
-          greta::install_greta_deps(timeout = 50)
         shell: Rscript {0}
+        run: |
+          install.packages("greta", repos = c("https://greta-dev.r-universe.dev", "https://cloud.r-project.org"))
+          library(greta)
+          install_greta_deps(timeout = 120)
 
       - name: Verify Greta Environment
         run: |
