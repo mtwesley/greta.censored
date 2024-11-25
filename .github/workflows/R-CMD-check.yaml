@@ -18,7 +18,11 @@ defaults:
 
 jobs:
   R-CMD-check:
-    name: ${{ matrix.os }} (${{ matrix.config.r }})
+    name: >
+      ${{ matrix.os == 'ubuntu-latest' && 'Ubuntu' || 
+          matrix.os == 'windows-latest' && 'Windows' || 
+          matrix.os == 'macOS-latest' && 'MacOS' }}
+      (R-${{ matrix.r }})
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -52,6 +56,7 @@ jobs:
 
       - name: Install qpdf (macOS only)
         if: runner.os == 'macOS'
+        shell: bash
         run: brew install qpdf
 
       - name: Install system dependencies
