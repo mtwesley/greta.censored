@@ -1,6 +1,7 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Extend Greta with Censored Distributions
+## greta.censored: Censored distributions in greta
 
 <!-- badges: start -->
 <!-- once you've signed into travis and set it to wath your new repository, you can edit the following badges to point to your repo -->
@@ -10,26 +11,46 @@ coverage](https://codecov.io/gh/mtwesley/greta.censored/branch/main/graph/badge.
 [![R-CMD-check](https://github.com/mtwesley/greta.censored/workflows/R-CMD-check/badge.svg)](https://github.com/mtwesley/greta.censored/actions)
 <!-- badges: end -->
 
+## Code of Conduct
+
+Please note that the greta.gp project is released with a [Contributor
+Code of
+Conduct](https://greta-dev.github.io/greta.gp/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.
+
 ## Overview
 
-`greta.censored` is an R package that extends the functionality of the `greta` package by providing additional censored distributions. These distributions include censored versions of Normal, Log-Normal, Student's t, Gamma, Exponential, Weibull, Pareto, and Beta distributions. The package supports right, left, and interval censoring.
+`greta.censored` is an R package that extends
+[`greta`](https://github.com/greta-dev/greta) to support the following
+distributions with right, left, and interval censoring:
+
+- Normal
+- Log-Normal
+- Student’s T
+- Gamma
+- Exponential
+- Weibull
+- Pareto
+- Beta.
 
 ## Installation
 
-You can install the development version of `greta.censored` from GitHub with:
+You can install the development version of `greta.censored` from GitHub
+with:
 
-```r
+``` r
 # install.packages("devtools")
 devtools::install_github("mtwesley/greta.censored")
 ```
 
 ## Usage
 
-Here are some examples demonstrating how to use the main functions of the `greta.censored` package:
+Here are some examples demonstrating how to use the main functions of
+the `greta.censored` package:
 
 ### Example 1: Censored Normal Distribution
 
-```r
+``` r
 library(greta)
 library(greta.censored)
 
@@ -50,7 +71,7 @@ print(dist)
 
 ### Example 2: Censored Log-Normal Distribution
 
-```r
+``` r
 library(greta)
 library(greta.censored)
 
@@ -71,6 +92,8 @@ print(dist)
 
 ## Citation
 
-If you use the `greta.censored` package in your research, please cite it as follows:
+If you use the `greta.censored` package in your research, please cite it
+as follows:
 
-greta.censored: Extend Greta with Censored Distributions. R package version 0.1.0. https://github.com/mtwesley/greta.censored
+greta.censored: Censored distributions in greta. R package version
+0.1.0. <https://github.com/mtwesley/greta.censored>

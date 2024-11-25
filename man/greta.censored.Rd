@@ -4,7 +4,7 @@
 \name{greta.censored}
 \alias{greta.censored-package}
 \alias{greta.censored}
-\title{Extend Greta with Censored Distributions}
+\title{Censored distributions in greta}
 \description{
 Provides additional censored distributions for use with Greta,
 a probabilistic programming framework for Bayesian modeling. Includes
