@@ -4,7 +4,11 @@
 #' @title Extend Greta with Censored Distributions
 #' @name greta.censored
 #' 
-#' @description describe your package here, you can re-use the text from DESCRIPTION
+#' @description Provides additional censored distributions for use with Greta, 
+#' a probabilistic programming framework for Bayesian modeling. Includes 
+#' censored versions of Normal, Log-Normal, Student's t, Gamma, Exponential, 
+#' Weibull, Pareto, and Beta distributions with support for right, left, 
+#' and interval censoring.
 #' 
 #' @docType package
 #' 
