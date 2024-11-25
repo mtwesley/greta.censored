@@ -59,21 +59,12 @@ jobs:
         if: steps.r-package-cache.outputs.cache-hit != 'true'
         run: install.packages("remotes")
 
-      # Install Homebrew and qpdf on macOS
       - name: Install Homebrew and qpdf
         if: runner.os == 'macOS'
         run: |
-          # Install Homebrew if not already installed
-          if ! command -v brew &> /dev/null; then
-            echo "Installing Homebrew..."
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          else
-            echo "Homebrew already installed."
-          fi
-          # Ensure Homebrew is updated
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew update
-          # Install qpdf
-          brew install qpdf
+          brew install qpdf || echo "qpdf already installed."
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
