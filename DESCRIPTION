@@ -1,19 +1,23 @@
-Package: greta.template
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Package: greta.censored
+Title: Extend Greta with Censored Distributions
+Version: 0.1.0
 Authors@R: c(
     person(
-        given = "First", 
-        family = "Last",
-        email = "first.last@example.com", 
+        given = "Mlen-Too", 
+        family = "Wesley",
+        email = "mlen.too.wesley@gmail.com", 
         role = c("aut", "cre"),
         comment = c(ORCID = "YOUR-ORCID-ID")
       )
     )
-Description: What the package does (one paragraph).
+Description: Provides additional censored distributions for use with Greta, 
+    a probabilistic programming framework for Bayesian modeling. Includes 
+    censored versions of Normal, Log-Normal, Student's t, Gamma, Exponential, 
+    Weibull, Pareto, and Beta distributions with support for right, left, 
+    and interval censoring.
 License: Apache License 2.0
-URL: https://github.com/your_username/your_repository
-BugReports: https://github.com/your_username/your_repository/issues
+URL: https://github.com/mtwesley/greta.censored
+BugReports: https://github.com/mtwesley/greta.censored/issues
 Depends: 
     greta (>= 0.4.2),
     R (>= 3.1.0)
