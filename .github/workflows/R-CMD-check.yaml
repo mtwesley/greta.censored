@@ -46,7 +46,16 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Install Homebrew (macOS only)
+      - name: Install system dependencies (Linux only)
+        if: runner.os == 'Linux'
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::rcmdcheck
+            any::sessioninfo
+            any::remotes
+
+      - name: Install Homebrew and qpdf (macOS only)
         if: runner.os == 'macOS'
         uses: Homebrew/actions/setup-homebrew@master
 
@@ -69,28 +78,19 @@ jobs:
       - name: Install greta and dependencies
         shell: Rscript {0}
         run: |
-          install.packages("remotes", repos = "https://cloud.r-project.org")
-          install.packages("rcmdcheck", repos = "https://cloud.r-project.org")
-          install.packages("sessioninfo", repos = "https://cloud.r-project.org")
+          install.packages("greta", repos = c("https://greta-dev.r-universe.dev", "https://cloud.r-project.org"))
           library(greta)
           install_greta_deps(timeout = 120)
 
-      - name: Verify Greta Environment
+      - name: Verify Greta environment
+        shell: Rscript {0}
         run: |
           library(greta)
           greta::greta_sitrep()
-        shell: Rscript {0}
 
-      - name: Install package + deps
-        run: |
-          
-          remotes::install_local(dependencies = TRUE, force = TRUE)
-
-      - name: R CMD check
-        run: rcmdcheck::rcmdcheck(args = '--no-manual', error_on = 'warning', check_dir = 'check')
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          args: '--no-manual --as-cran'
 
       - name: Session info
-        run: |
-          options(width = 100)
-          pkgs <- installed.packages()[, "Package"]
-          sessioninfo::session_info(pkgs, include_base = TRUE)
+        run: sessioninfo::session_info()
