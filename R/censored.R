@@ -1,3 +1,5 @@
+library(reticulate)
+
 distrib <- .internals$nodes$constructors$distrib
 distribution_node <- .internals$nodes$node_classes$distribution_node
 as.greta_array <- .internals$greta_arrays$as.greta_array
