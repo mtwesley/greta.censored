@@ -1,3 +1,3 @@
 library(testthat)
-library(greta.template)
-test_check("greta.template")
+library(greta.censored)
+test_check("greta.censored")
