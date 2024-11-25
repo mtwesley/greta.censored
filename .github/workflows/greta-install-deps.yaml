@@ -26,6 +26,10 @@ jobs:
         if: runner.os == 'macOS'
         run: sudo chown -R $UID $CONDA
 
+      - name: Update Homebrew
+        if: runner.os == 'macOS'
+        run: brew update
+
       - name: Remotes install greta
         run: |
           install.packages('remotes')
