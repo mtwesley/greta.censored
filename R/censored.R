@@ -1,14 +1,14 @@
 library(reticulate)
 
-distrib <- .internals$nodes$constructors$distrib
-distribution_node <- .internals$nodes$node_classes$distribution_node
-as.greta_array <- .internals$greta_arrays$as.greta_array
+distrib <- greta:::.internals$nodes$constructors$distrib
+distribution_node <- greta:::.internals$nodes$node_classes$distribution_node
+as.greta_array <- greta:::.internals$greta_arrays$as.greta_array
 
-check_dims <- .internals$checks$check_dims
-check_numeric_length_1 <- .internals$checks$check_numeric_length_1
-check_finite <- .internals$checks$check_finite
-check_x_gte_y <- .internals$checks$check_x_gte_y
-check_param_greta_array <- .internals$checks$check_param_greta_array
+check_dims <- greta:::.internals$checks$check_dims
+check_numeric_length_1 <- greta:::.internals$checks$check_numeric_length_1
+check_finite <- greta:::.internals$checks$check_finite
+check_x_gte_y <- greta:::.internals$checks$check_x_gte_y
+check_param_greta_array <- greta:::.internals$checks$check_param_greta_array
 
 tfp <- import("tensorflow_probability")
 tf <- import("tensorflow")
