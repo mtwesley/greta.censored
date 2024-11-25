@@ -17,10 +17,10 @@ test_that("student_censored distribution works correctly", {
   upper_bound <- 1
   is_censored <- y > lower_bound & y < upper_bound
   y_obs <- y
-  y_obs[is_censored] <- NA  # Interval censored data
+  y_obs[is_censored] <- NA # Interval censored data
 
   # Data preparation
-  y_greta <- as_data(ifelse(is.na(y_obs), 0, y_obs))  # Placeholder for censored data
+  y_greta <- as_data(ifelse(is.na(y_obs), 0, y_obs)) # Placeholder for censored data
   is_censored_greta <- as_data(as.numeric(is_censored))
 
   # Define the model
@@ -33,7 +33,7 @@ test_that("student_censored distribution works correctly", {
     loc = loc,
     scale = scale,
     is_censored = is_censored_greta,
-    censoring_type = "interval",
+    censor = "interval",
     lower = lower_bound,
     upper = upper_bound,
     dim = n

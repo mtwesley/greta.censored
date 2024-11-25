@@ -28,7 +28,7 @@ test_that("weibull_censored distribution works correctly", {
     shape = shape,
     scale = scale,
     is_censored = is_censored_greta,
-    censoring_type = "right",
+    censor = "right",
     lower = NULL,
     upper = NULL,
     dim = n

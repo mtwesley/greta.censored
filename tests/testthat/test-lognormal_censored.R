@@ -28,7 +28,7 @@ test_that("lognormal_censored distribution works correctly", {
     meanlog = meanlog,
     sdlog = sdlog,
     is_censored = is_censored_greta,
-    censoring_type = "left",
+    censor = "left",
     lower = NULL,
     upper = NULL,
     dim = n

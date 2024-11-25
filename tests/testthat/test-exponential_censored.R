@@ -25,7 +25,7 @@ test_that("exponential_censored distribution works correctly", {
   distribution(y_greta) <- exponential_censored(
     rate = rate,
     is_censored = is_censored_greta,
-    censoring_type = "left",
+    censor = "left",
     lower = NULL,
     upper = NULL,
     dim = n

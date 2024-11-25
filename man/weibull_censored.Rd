@@ -8,7 +8,7 @@ weibull_censored(
   shape,
   scale,
   is_censored,
-  censoring_type = "right",
+  censor = "right",
   lower = NULL,
   upper = NULL,
   dim = length(shape)
@@ -21,7 +21,7 @@ weibull_censored(
 
 \item{is_censored}{Logical vector indicating whether each observation is censored.}
 
-\item{censoring_type}{Type of censoring: one of 'right', 'left', 'interval'.}
+\item{censor}{Type of censoring: one of 'right', 'left', 'interval'.}
 
 \item{lower}{Lower bound for interval censoring (optional).}
 

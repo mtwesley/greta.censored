@@ -28,7 +28,7 @@ test_that("gamma_censored distribution works correctly", {
     shape = shape,
     rate = rate,
     is_censored = is_censored_greta,
-    censoring_type = "right",
+    censor = "right",
     lower = NULL,
     upper = NULL,
     dim = n

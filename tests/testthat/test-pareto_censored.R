@@ -9,7 +9,7 @@ test_that("pareto_censored distribution works correctly", {
   n <- 100
   true_scale <- 1
   true_alpha <- 2.5
-  library(VGAM)  # For rpareto
+  library(VGAM) # For rpareto
   y <- rpareto(n, scale = true_scale, shape = true_alpha)
 
   # Introduce left censoring at y < 2
@@ -29,7 +29,7 @@ test_that("pareto_censored distribution works correctly", {
     scale = scale,
     alpha = alpha,
     is_censored = is_censored_greta,
-    censoring_type = "left",
+    censor = "left",
     lower = NULL,
     upper = NULL,
     dim = n

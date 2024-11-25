@@ -28,7 +28,7 @@ test_that("normal_censored distribution works correctly", {
     mean = mean,
     sd = sd,
     is_censored = is_censored_greta,
-    censoring_type = "right",
+    censor = "right",
     lower = NULL,
     upper = NULL,
     dim = n

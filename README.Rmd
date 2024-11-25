@@ -59,12 +59,12 @@ library(greta.censored)
 mean <- as.greta_array(0)
 sd <- as.greta_array(1)
 is_censored <- as.greta_array(c(0, 1, 0))
-censoring_type <- "right"
+censor <- "right"
 lower <- -Inf
 upper <- 1
 
 # Create the censored normal distribution
-dist <- normal_censored(mean, sd, is_censored, censoring_type, lower, upper)
+dist <- normal_censored(mean, sd, is_censored, censor, lower, upper)
 
 # Print the distribution
 print(dist)
@@ -80,12 +80,12 @@ library(greta.censored)
 meanlog <- as.greta_array(0)
 sdlog <- as.greta_array(1)
 is_censored <- as.greta_array(c(0, 1, 0))
-censoring_type <- "left"
+censor <- "left"
 lower <- 0
 upper <- Inf
 
 # Create the censored log-normal distribution
-dist <- lognormal_censored(meanlog, sdlog, is_censored, censoring_type, lower, upper)
+dist <- lognormal_censored(meanlog, sdlog, is_censored, censor, lower, upper)
 
 # Print the distribution
 print(dist)
