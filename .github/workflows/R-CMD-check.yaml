@@ -90,6 +90,10 @@ jobs:
         if: runner.os == 'macOS'
         run: brew update
 
+      - name: Install qpdf
+        if: runner.os == 'macOS'
+        run: brew install qpdf
+
       - name: Python + TF details
         run: |
           tensorflow::tf_config()

@@ -30,6 +30,10 @@ jobs:
         if: runner.os == 'macOS'
         run: brew update
 
+      - name: Install qpdf
+        if: runner.os == 'macOS'
+        run: brew install qpdf
+
       - name: Remotes install greta
         run: |
           install.packages('remotes')
