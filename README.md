@@ -73,4 +73,4 @@ print(dist)
 
 If you use the `greta.censored` package in your research, please cite it as follows:
 
-Wesley, M.-T. (2023). greta.censored: Extend Greta with Censored Distributions. R package version 0.1.0. https://github.com/mtwesley/greta.censored
+greta.censored: Extend Greta with Censored Distributions. R package version 0.1.0. https://github.com/mtwesley/greta.censored
