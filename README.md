@@ -11,13 +11,6 @@ coverage](https://codecov.io/gh/mtwesley/greta.censored/branch/main/graph/badge.
 [![R-CMD-check](https://github.com/mtwesley/greta.censored/workflows/R-CMD-check/badge.svg)](https://github.com/mtwesley/greta.censored/actions)
 <!-- badges: end -->
 
-## Code of Conduct
-
-Please note that the greta.gp project is released with a [Contributor
-Code of
-Conduct](https://greta-dev.github.io/greta.gp/CODE_OF_CONDUCT.html). By
-contributing to this project, you agree to abide by its terms.
-
 ## Overview
 
 `greta.censored` is an R package that extends
@@ -89,6 +82,13 @@ dist <- lognormal_censored(meanlog, sdlog, is_censored, censoring_type, lower, u
 # Print the distribution
 print(dist)
 ```
+
+## Code of Conduct
+
+Please note that the greta.censored project is released with a
+[Contributor Code of
+Conduct](https://greta-dev.github.io/greta.censored/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
 
 ## Citation
 
