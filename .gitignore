@@ -1,4 +1,53 @@
+# History files
 .Rhistory
+.Rapp.history
+
+# Session Data files
 .RData
+
+# User-specific files
+.Ruserdata
+
+# RStudio files
+.Rproj.user/
 .Rproj.user
+
+# RStudio project files
+*.Rproj
+.Rproj.user
+
+# Compiled code
+*.o
+*.so
+*.dll
+
+# Packages
+.Rcheck/
+
+# Documentation
+.Rd2roxygen/
+.Rbuildignore
+
+# Output files
+/*.pdf
+/*.html
+/*.docx
+
+# Temporary files
+*.tmp
+*.log
+*.out
+*.rds
+
+# Cache files
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
+
+# Operating system files
 .DS_Store
+Thumbs.db
+
+# Python virtual environments
+venv/
+env/
