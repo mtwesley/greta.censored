@@ -1,6 +1,3 @@
-# this R file is just here to produce a package-level helpfile for people to
-# look at when they get started
-
 #' @title Censored distributions for greta
 #' @name greta.censored
 #'
@@ -19,4 +16,4 @@
 #'
 #' # add a simple example here to introduce the package!
 #'
-NULL
+"_PACKAGE"

@@ -14,24 +14,13 @@ jobs:
   test-coverage:
     runs-on: ubuntu-latest
     env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: 'true'
+      R_COMPILE_AND_INSTALL_PACKAGES: 'never'
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RETICULATE_AUTOCONFIGURE: 'FALSE'
 
     steps:
       - uses: actions/checkout@v4
-
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: |
-            any::covr
-            any::xml2
-            any::remotes
-            any::reticulate
-            any::devtools
 
       - name: Install Homebrew and qpdf (macOS only)
         if: runner.os == 'macOS'
@@ -53,6 +42,21 @@ jobs:
             sudo $cmd
           done < <(Rscript -e "writeLines(remotes::system_requirements('$ID-$VERSION_ID'))")
 
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::covr
+            any::xml2
+            any::remotes
+            any::reticulate
+            any::rcmdcheck
+            any::sessioninfo
+            any::devtools
+
       - name: Install greta and dependencies
         shell: Rscript {0}
         run: |
@@ -60,20 +64,17 @@ jobs:
           library(greta)
           install_greta_deps(timeout = 120)
 
-      - uses: codecov/codecov-action@v4
-        with:
-          fail_ci_if_error: ${{ github.event_name != 'pull_request' && true || false }}
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Show testthat output
-        if: always()
+      - name: Generate coverage report
+        shell: Rscript {0}
         run: |
-          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
+          library(covr)
+          cov <- covr::package_coverage(quiet = FALSE, clean = FALSE)
+          covr::to_cobertura(cov, output_file = "coverage.xml")
 
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          name: coverage-test-failures
-          path: ${{ runner.temp }}/package
+          fail_ci_if_error: true
+          files: coverage.xml
+          disable_search: true
+          verbose: true
