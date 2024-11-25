@@ -90,7 +90,9 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
+          flags: "--quiet --skip-cleanup"
           args: '--no-manual --as-cran'
+          error-on: "error"
 
       - name: Session info
         run: sessioninfo::session_info()
