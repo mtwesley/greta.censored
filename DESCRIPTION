@@ -11,7 +11,7 @@ Authors@R: c(
     )
 Description: Provides additional censored distributions for use with Greta, 
     a probabilistic programming framework for Bayesian modeling. Includes 
-    censored versions of Normal, Log-Normal, Student's t, Gamma, Exponential, 
+    censored versions of Normal, Log-Normal, Student's T, Gamma, Exponential, 
     Weibull, Pareto, and Beta distributions with support for right, left, 
     and interval censoring.
 License: Apache License 2.0
@@ -26,7 +26,8 @@ Imports:
     tensorflow (>= 1.14.0),
     reticulate,
     R6
-Suggests: 
+Suggests:
+    devtools,
     covr,
     knitr,
     rmarkdown,
