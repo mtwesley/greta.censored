@@ -2,6 +2,7 @@
 % Please edit documentation in R/package.R
 \docType{package}
 \name{greta.template}
+\alias{greta.template-package}
 \alias{greta.template}
 \title{What the Package Does (One Line, Title Case)}
 \description{
@@ -10,5 +11,17 @@ describe your package here, you can re-use the text from DESCRIPTION
 \examples{
 
 # add a simple example here to introduce the package!
+
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/your_username/your_repository}
+  \item Report bugs at \url{https://github.com/your_username/your_repository/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
