@@ -16,9 +16,11 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4  # Updated Node.js version
 
       - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -43,7 +45,6 @@ jobs:
           remotes::install_cran("covr")
         shell: Rscript {0}
 
-      ###
       - name: Install Miniconda
         run: |
           install.packages(c("remotes", "keras"))
@@ -55,21 +56,24 @@ jobs:
         run: |
           echo "options(reticulate.conda_binary = reticulate:::miniconda_conda())" >> .Rprofile
 
-#  Perhaps here is where we can install / change the environment that we are
-# installing into? Can we call our own greta install functions here?
       - name: Install TensorFlow
         run: |
-          reticulate::conda_create(envname = "greta-env",python_version = "3.7")
+          reticulate::conda_create(envname = "greta-env", python_version = "3.7")
           reticulate::conda_install(envname = "greta-env", packages = c("numpy==1.16.4", "tensorflow-probability==0.7.0", "tensorflow==1.14.0"))
         shell: Rscript {0}
 
       - name: Update Homebrew
         if: runner.os == 'macOS'
-        run: brew update
+        run: |
+          brew uninstall --force --ignore-dependencies qpdf || true
+          brew update
+          brew install qpdf
 
-      - name: Install qpdf
+      - name: Debug Homebrew Environment
         if: runner.os == 'macOS'
-        run: brew install qpdf
+        run: |
+          brew doctor
+          brew config
 
       - name: Python + TF details
         run: |
@@ -77,7 +81,6 @@ jobs:
           Rscript -e 'tensorflow::tf_version()'
           Rscript -e 'reticulate::py_module_available("tensorflow_probability")'
           Rscript -e 'reticulate::py_config()'
-      ###
 
       - name: Test coverage
         run: covr::codecov()
