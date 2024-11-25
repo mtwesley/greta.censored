@@ -4,11 +4,11 @@ distrib <- greta:::.internals$nodes$constructors$distrib
 distribution_node <- greta:::.internals$nodes$node_classes$distribution_node
 as.greta_array <- greta:::.internals$greta_arrays$as.greta_array
 
-check_dims <- greta:::.internals$checks$check_dims
-check_numeric_length_1 <- greta:::.internals$checks$check_numeric_length_1
-check_finite <- greta:::.internals$checks$check_finite
-check_x_gte_y <- greta:::.internals$checks$check_x_gte_y
-check_param_greta_array <- greta:::.internals$checks$check_param_greta_array
+# check_dims <- greta:::.internals$checks$check_dims
+# check_numeric_length_1 <- greta:::.internals$checks$check_numeric_length_1
+# check_finite <- greta:::.internals$checks$check_finite
+# check_x_gte_y <- greta:::.internals$checks$check_x_gte_y
+# check_param_greta_array <- greta:::.internals$checks$check_param_greta_array
 
 tfp <- import("tensorflow_probability")
 tf <- import("tensorflow")
@@ -20,14 +20,14 @@ normal_censored_distribution <- R6::R6Class(
     initialize = function(mean, sd, is_censored, censoring_type, lower, upper, dim) {
       mean <- as.greta_array(mean)
       sd <- as.greta_array(sd)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(mean, sd, is_censored, target_dim = dim)
+      # dim <- check_dims(mean, sd, is_censored, target_dim = dim)
 
       super$initialize("normal_censored", dim)
       self$add_parameter(mean, "mean")
@@ -74,14 +74,14 @@ lognormal_censored_distribution <- R6::R6Class(
     initialize = function(meanlog, sdlog, is_censored, censoring_type, lower, upper, dim) {
       meanlog <- as.greta_array(meanlog)
       sdlog <- as.greta_array(sdlog)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(meanlog, sdlog, is_censored, target_dim = dim)
+      # dim <- check_dims(meanlog, sdlog, is_censored, target_dim = dim)
 
       super$initialize("lognormal_censored", dim)
       self$add_parameter(meanlog, "meanlog")
@@ -129,14 +129,14 @@ student_censored_distribution <- R6::R6Class(
       df <- as.greta_array(df)
       loc <- as.greta_array(loc)
       scale <- as.greta_array(scale)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(df, loc, scale, is_censored, target_dim = dim)
+      # dim <- check_dims(df, loc, scale, is_censored, target_dim = dim)
 
       super$initialize("student_censored", dim)
       self$add_parameter(df, "df")
@@ -185,14 +185,14 @@ gamma_censored_distribution <- R6::R6Class(
     initialize = function(shape, rate, is_censored, censoring_type, lower, upper, dim) {
       shape <- as.greta_array(shape)
       rate <- as.greta_array(rate)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(shape, rate, is_censored, target_dim = dim)
+      # dim <- check_dims(shape, rate, is_censored, target_dim = dim)
 
       super$initialize("gamma_censored", dim)
       self$add_parameter(shape, "shape")
@@ -238,14 +238,14 @@ exponential_censored_distribution <- R6::R6Class(
   public = list(
     initialize = function(rate, is_censored, censoring_type, lower, upper, dim) {
       rate <- as.greta_array(rate)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(rate, is_censored, target_dim = dim)
+      # dim <- check_dims(rate, is_censored, target_dim = dim)
 
       super$initialize("exponential_censored", dim)
       self$add_parameter(rate, "rate")
@@ -289,14 +289,14 @@ weibull_censored_distribution <- R6::R6Class(
     initialize = function(shape, scale, is_censored, censoring_type, lower, upper, dim) {
       shape <- as.greta_array(shape)
       scale <- as.greta_array(scale)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(shape, scale, is_censored, target_dim = dim)
+      # dim <- check_dims(shape, scale, is_censored, target_dim = dim)
 
       super$initialize("weibull_censored", dim)
       self$add_parameter(shape, "shape")
@@ -343,14 +343,14 @@ pareto_censored_distribution <- R6::R6Class(
     initialize = function(scale, alpha, is_censored, censoring_type, lower, upper, dim) {
       scale <- as.greta_array(scale)
       alpha <- as.greta_array(alpha)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(scale, alpha, is_censored, target_dim = dim)
+      # dim <- check_dims(scale, alpha, is_censored, target_dim = dim)
 
       super$initialize("pareto_censored", dim)
       self$add_parameter(scale, "scale")
@@ -397,14 +397,14 @@ beta_censored_distribution <- R6::R6Class(
     initialize = function(alpha, beta, is_censored, censoring_type, lower, upper, dim) {
       alpha <- as.greta_array(alpha)
       beta <- as.greta_array(beta)
-      is_censored <- check_param_greta_array(is_censored)
-      check_numeric_length_1(lower)
-      check_numeric_length_1(upper)
-      check_finite(lower)
-      check_finite(upper)
-      check_x_gte_y(lower, upper)
+      # is_censored <- check_param_greta_array(is_censored)
+      # check_numeric_length_1(lower)
+      # check_numeric_length_1(upper)
+      # check_finite(lower)
+      # check_finite(upper)
+      # check_x_gte_y(lower, upper)
 
-      dim <- check_dims(alpha, beta, is_censored, target_dim = dim)
+      # dim <- check_dims(alpha, beta, is_censored, target_dim = dim)
 
       super$initialize("beta_censored", dim)
       self$add_parameter(alpha, "alpha")
