@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Extend Greta with Censored Distributions
@@ -10,3 +9,68 @@
 coverage](https://codecov.io/gh/mtwesley/greta.censored/branch/main/graph/badge.svg)](https://codecov.io/gh/mtwesley/greta.censored?branch=main)
 [![R-CMD-check](https://github.com/mtwesley/greta.censored/workflows/R-CMD-check/badge.svg)](https://github.com/mtwesley/greta.censored/actions)
 <!-- badges: end -->
+
+## Overview
+
+`greta.censored` is an R package that extends the functionality of the `greta` package by providing additional censored distributions. These distributions include censored versions of Normal, Log-Normal, Student's t, Gamma, Exponential, Weibull, Pareto, and Beta distributions. The package supports right, left, and interval censoring.
+
+## Installation
+
+You can install the development version of `greta.censored` from GitHub with:
+
+```r
+# install.packages("devtools")
+devtools::install_github("mtwesley/greta.censored")
+```
+
+## Usage
+
+Here are some examples demonstrating how to use the main functions of the `greta.censored` package:
+
+### Example 1: Censored Normal Distribution
+
+```r
+library(greta)
+library(greta.censored)
+
+# Define the parameters
+mean <- as.greta_array(0)
+sd <- as.greta_array(1)
+is_censored <- as.greta_array(c(0, 1, 0))
+censoring_type <- "right"
+lower <- -Inf
+upper <- 1
+
+# Create the censored normal distribution
+dist <- normal_censored(mean, sd, is_censored, censoring_type, lower, upper)
+
+# Print the distribution
+print(dist)
+```
+
+### Example 2: Censored Log-Normal Distribution
+
+```r
+library(greta)
+library(greta.censored)
+
+# Define the parameters
+meanlog <- as.greta_array(0)
+sdlog <- as.greta_array(1)
+is_censored <- as.greta_array(c(0, 1, 0))
+censoring_type <- "left"
+lower <- 0
+upper <- Inf
+
+# Create the censored log-normal distribution
+dist <- lognormal_censored(meanlog, sdlog, is_censored, censoring_type, lower, upper)
+
+# Print the distribution
+print(dist)
+```
+
+## Citation
+
+If you use the `greta.censored` package in your research, please cite it as follows:
+
+Wesley, M.-T. (2023). greta.censored: Extend Greta with Censored Distributions. R package version 0.1.0. https://github.com/mtwesley/greta.censored
