@@ -26,6 +26,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Mlen-Too Wesley \email{mlen.too.wesley@gmail.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Mlen-Too Wesley \email{mlen.too.wesley@gmail.com}
 
 }
