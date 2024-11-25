@@ -1,5 +1,5 @@
 Package: greta.censored
-Title: Censored distributions in greta
+Title: Censored distributions for greta
 Version: 0.1.0
 Authors@R: c(
     person(

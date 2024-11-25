@@ -1,7 +1,7 @@
 # this R file is just here to produce a package-level helpfile for people to
 # look at when they get started
 
-#' @title Censored distributions in greta
+#' @title Censored distributions for greta
 #' @name greta.censored
 #'
 #' @description Provides additional censored distributions for use with Greta,
