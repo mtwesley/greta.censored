@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# greta.template
+# greta.censored
 
 <!-- badges: start -->
 <!-- once you've signed into travis and set it to wath your new repository, you can edit the following badges to point to your repo -->
