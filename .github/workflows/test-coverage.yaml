@@ -30,8 +30,20 @@ jobs:
             any::covr
             any::xml2
             any::remotes
+            any::reticulate
+            any::devtools
+
+      - name: Install Homebrew and qpdf (macOS only)
+        if: runner.os == 'macOS'
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Install qpdf (macOS only)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: brew install qpdf
 
       - name: Install system dependencies
+        if: runner.os == 'Linux'
         shell: bash
         run: |
           . /etc/os-release
@@ -41,24 +53,12 @@ jobs:
             sudo $cmd
           done < <(Rscript -e "writeLines(remotes::system_requirements('$ID-$VERSION_ID'))")
 
-      - name: Install package + deps
-        run: remotes::install_local(dependencies = TRUE, force = TRUE)
+      - name: Install greta and dependencies
         shell: Rscript {0}
-
-      - name: Install greta deps
         run: |
+          install.packages("greta", repos = c("https://greta-dev.r-universe.dev", "https://cloud.r-project.org"))
           library(greta)
-          greta::install_greta_deps(timeout = 50)
-        shell: Rscript {0}
-
-      - name: Situation Report on greta install
-        run: greta::greta_sitrep()
-        shell: Rscript {0}
-
-      - name: Test coverage
-        uses: r-lib/actions/test-coverage@v2
-        with:
-          type: covr
+          install_greta_deps(timeout = 120)
 
       - uses: codecov/codecov-action@v4
         with:

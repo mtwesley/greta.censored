@@ -54,6 +54,8 @@ jobs:
             any::rcmdcheck
             any::sessioninfo
             any::remotes
+            any::reticulate
+            any::devtools
 
       - name: Install Homebrew and qpdf (macOS only)
         if: runner.os == 'macOS'
