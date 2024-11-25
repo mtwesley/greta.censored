@@ -17,6 +17,9 @@ normal_censored_distribution <- R6::R6Class(
   "normal_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(mean, sd, is_censored, censor, lower, upper, dim) {
       mean <- as.greta_array(mean)
       sd <- as.greta_array(sd)
@@ -33,9 +36,9 @@ normal_censored_distribution <- R6::R6Class(
       self$add_parameter(mean, "mean")
       self$add_parameter(sd, "sd")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       mean <- parameters$mean
@@ -43,12 +46,12 @@ normal_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       norm_dist <- tfp$distributions$Normal(loc = mean, scale = sd)
 
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) norm_dist$log_survival_function(y),
         "left" = function(y) norm_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- norm_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- norm_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- norm_dist$log_cdf(self$upper)
+          log_cdf_lower <- norm_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) norm_dist$log_prob(y)
@@ -71,6 +74,9 @@ lognormal_censored_distribution <- R6::R6Class(
   "lognormal_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(meanlog, sdlog, is_censored, censor, lower, upper, dim) {
       meanlog <- as.greta_array(meanlog)
       sdlog <- as.greta_array(sdlog)
@@ -87,9 +93,9 @@ lognormal_censored_distribution <- R6::R6Class(
       self$add_parameter(meanlog, "meanlog")
       self$add_parameter(sdlog, "sdlog")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       meanlog <- parameters$meanlog
@@ -97,12 +103,12 @@ lognormal_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       lognorm_dist <- tfp$distributions$LogNormal(loc = meanlog, scale = sdlog)
 
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) lognorm_dist$log_survival_function(y),
         "left" = function(y) lognorm_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- lognorm_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- lognorm_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- lognorm_dist$log_cdf(self$upper)
+          log_cdf_lower <- lognorm_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) lognorm_dist$log_prob(y)
@@ -125,6 +131,9 @@ student_censored_distribution <- R6::R6Class(
   "student_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(df, loc, scale, is_censored, censor, lower, upper, dim) {
       df <- as.greta_array(df)
       loc <- as.greta_array(loc)
@@ -143,9 +152,9 @@ student_censored_distribution <- R6::R6Class(
       self$add_parameter(loc, "loc")
       self$add_parameter(scale, "scale")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       df <- parameters$df
@@ -154,12 +163,12 @@ student_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       student_dist <- tfp$distributions$StudentT(df = df, loc = loc, scale = scale)
 
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) student_dist$log_survival_function(y),
         "left" = function(y) student_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- student_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- student_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- student_dist$log_cdf(self$upper)
+          log_cdf_lower <- student_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) student_dist$log_prob(y)
@@ -182,6 +191,9 @@ gamma_censored_distribution <- R6::R6Class(
   "gamma_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(shape, rate, is_censored, censor, lower, upper, dim) {
       shape <- as.greta_array(shape)
       rate <- as.greta_array(rate)
@@ -198,9 +210,9 @@ gamma_censored_distribution <- R6::R6Class(
       self$add_parameter(shape, "shape")
       self$add_parameter(rate, "rate")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       shape <- parameters$shape
@@ -208,12 +220,12 @@ gamma_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       gamma_dist <- tfp$distributions$Gamma(concentration = shape, rate = rate)
 
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) gamma_dist$log_survival_function(y),
         "left" = function(y) gamma_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- gamma_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- gamma_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- gamma_dist$log_cdf(self$upper)
+          log_cdf_lower <- gamma_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) gamma_dist$log_prob(y)
@@ -236,6 +248,9 @@ exponential_censored_distribution <- R6::R6Class(
   "exponential_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(rate, is_censored, censor, lower, upper, dim) {
       rate <- as.greta_array(rate)
       # is_censored <- check_param_greta_array(is_censored)
@@ -250,20 +265,20 @@ exponential_censored_distribution <- R6::R6Class(
       super$initialize("exponential_censored", dim)
       self$add_parameter(rate, "rate")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       rate <- parameters$rate
       is_censored <- parameters$is_censored
       exp_dist <- tfp$distributions$Exponential(rate = rate)
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) exp_dist$log_survival_function(y),
         "left" = function(y) exp_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- exp_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- exp_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- exp_dist$log_cdf(self$upper)
+          log_cdf_lower <- exp_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) exp_dist$log_prob(y)
@@ -286,6 +301,9 @@ weibull_censored_distribution <- R6::R6Class(
   "weibull_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(shape, scale, is_censored, censor, lower, upper, dim) {
       shape <- as.greta_array(shape)
       scale <- as.greta_array(scale)
@@ -302,9 +320,9 @@ weibull_censored_distribution <- R6::R6Class(
       self$add_parameter(shape, "shape")
       self$add_parameter(scale, "scale")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       shape <- parameters$shape
@@ -312,12 +330,12 @@ weibull_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       weibull_dist <- tfp$distributions$Weibull(concentration = shape, scale = scale)
 
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) weibull_dist$log_survival_function(y),
         "left" = function(y) weibull_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- weibull_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- weibull_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- weibull_dist$log_cdf(self$upper)
+          log_cdf_lower <- weibull_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) weibull_dist$log_prob(y)
@@ -340,6 +358,9 @@ pareto_censored_distribution <- R6::R6Class(
   "pareto_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(scale, alpha, is_censored, censor, lower, upper, dim) {
       scale <- as.greta_array(scale)
       alpha <- as.greta_array(alpha)
@@ -356,9 +377,9 @@ pareto_censored_distribution <- R6::R6Class(
       self$add_parameter(scale, "scale")
       self$add_parameter(alpha, "alpha")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       scale <- parameters$scale
@@ -366,12 +387,12 @@ pareto_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       pareto_dist <- tfp$distributions$Pareto(concentration = alpha, scale = scale)
 
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) pareto_dist$log_survival_function(y),
         "left" = function(y) pareto_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- pareto_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- pareto_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- pareto_dist$log_cdf(self$upper)
+          log_cdf_lower <- pareto_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) pareto_dist$log_prob(y)
@@ -394,6 +415,9 @@ beta_censored_distribution <- R6::R6Class(
   "beta_censored_distribution",
   inherit = distribution_node,
   public = list(
+    censor = NULL,
+    lower = NULL,
+    upper = NULL,
     initialize = function(alpha, beta, is_censored, censor, lower, upper, dim) {
       alpha <- as.greta_array(alpha)
       beta <- as.greta_array(beta)
@@ -410,9 +434,9 @@ beta_censored_distribution <- R6::R6Class(
       self$add_parameter(alpha, "alpha")
       self$add_parameter(beta, "beta")
       self$add_parameter(is_censored, "is_censored")
-      self$add_parameter(censor, "censor")
-      self$add_parameter(lower, "lower")
-      self$add_parameter(upper, "upper")
+      self$censor <- censor
+      self$lower <- lower
+      self$upper <- upper
     },
     tf_distrib = function(parameters, dag) {
       alpha <- parameters$alpha
@@ -420,12 +444,12 @@ beta_censored_distribution <- R6::R6Class(
       is_censored <- parameters$is_censored
       beta_dist <- tfp$distributions$Beta(concentration1 = alpha, concentration0 = beta)
 
-      censored_log_prob <- switch(parameters$censor,
+      censored_log_prob <- switch(self$censor,
         "right" = function(y) beta_dist$log_survival_function(y),
         "left" = function(y) beta_dist$log_cdf(y),
         "interval" = function(y) {
-          log_cdf_upper <- beta_dist$log_cdf(parameters$upper)
-          log_cdf_lower <- beta_dist$log_cdf(parameters$lower)
+          log_cdf_upper <- beta_dist$log_cdf(self$upper)
+          log_cdf_lower <- beta_dist$log_cdf(self$lower)
           tf$log(tf$exp(log_cdf_upper) - tf$exp(log_cdf_lower))
         },
         function(y) beta_dist$log_prob(y)
