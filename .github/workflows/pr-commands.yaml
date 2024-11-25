@@ -18,6 +18,9 @@ jobs:
       - name: Update Homebrew
         if: runner.os == 'macOS'
         run: brew update
+      - name: Install qpdf
+        if: runner.os == 'macOS'
+        run: brew install qpdf
       - name: Install dependencies
         run: Rscript -e 'install.packages(c("remotes", "roxygen2"))' -e 'remotes::install_deps(dependencies = TRUE)'
       - name: Document
@@ -46,6 +49,9 @@ jobs:
       - name: Update Homebrew
         if: runner.os == 'macOS'
         run: brew update
+      - name: Install qpdf
+        if: runner.os == 'macOS'
+        run: brew install qpdf
       - name: Install dependencies
         run: Rscript -e 'install.packages("styler")'
       - name: Style
