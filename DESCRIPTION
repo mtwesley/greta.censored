@@ -26,6 +26,7 @@ Imports:
     tensorflow (>= 1.14.0)
 Suggests:
     devtools,
+    VGAM,
     covr,
     knitr,
     rmarkdown,
