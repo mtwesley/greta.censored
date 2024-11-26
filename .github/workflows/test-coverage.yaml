@@ -97,7 +97,15 @@ jobs:
         run: |
           library(covr)
           cov <- covr::package_coverage(quiet = FALSE, clean = FALSE)
-          covr::to_cobertura(cov)
+          covr::to_cobertura(cov, output_file = "coverage.xml")
+
+      - uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: ${{ github.event_name != 'pull_request' && true || false }}
+          file: ./cobertura.xml
+          plugin: noop
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
@@ -106,3 +114,10 @@ jobs:
           files: coverage.xml
           disable_search: true
           verbose: true
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash

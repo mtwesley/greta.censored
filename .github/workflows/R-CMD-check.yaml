@@ -122,5 +122,12 @@ jobs:
           error-on: '"error"'
           # check-dir: '"check"'
 
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
       - name: Session info
         run: sessioninfo::session_info()
