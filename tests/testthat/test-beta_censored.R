@@ -2,6 +2,7 @@
 
 library(greta)
 library(testthat)
+library(reticulate)
 
 test_that("beta_censored distribution works correctly", {
   # Simulate data
@@ -42,4 +43,11 @@ test_that("beta_censored distribution works correctly", {
 
   # Output results
   summary(draws)
+
+  # Print Python errors before the expectation
+  print(py_last_error())
+
+  # Add meaningful expectations
+  expect_true(mean(draws$alpha) > 1.5 && mean(draws$alpha) < 2.5)
+  expect_true(mean(draws$beta) > 4.5 && mean(draws$beta) < 5.5)
 })
