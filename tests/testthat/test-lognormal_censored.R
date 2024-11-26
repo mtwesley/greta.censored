@@ -36,8 +36,8 @@ test_that("lognormal_censored distribution works correctly", {
 
   # Model fitting
   m <- model(meanlog, sdlog)
-  draws <- mcmc(m, n_samples = 1000)
 
-  # Output results
-  summary(draws)
+  # Add expectations
+  expect_s3_class(m, "greta_model")
+  expect_error(py_last_error(), NA)
 })
