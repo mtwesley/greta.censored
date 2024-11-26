@@ -97,7 +97,7 @@ jobs:
         run: |
           library(covr)
           cov <- covr::package_coverage(quiet = FALSE, clean = FALSE)
-          covr::to_cobertura(cov, output_file = "coverage.xml")
+          covr::to_cobertura(cov)
 
       - uses: codecov/codecov-action@v4
         with:
