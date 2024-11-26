@@ -2,6 +2,7 @@
 
 library(greta)
 library(testthat)
+library(reticulate)
 
 test_that("pareto_censored distribution works correctly", {
   # Simulate data
@@ -41,4 +42,11 @@ test_that("pareto_censored distribution works correctly", {
 
   # Output results
   summary(draws)
+
+  # Print Python errors before the expectation
+  print(py_last_error())
+
+  # Add meaningful expectations
+  expect_true(mean(draws$scale) > 0.5 && mean(draws$scale) < 1.5)
+  expect_true(mean(draws$alpha) > 2 && mean(draws$alpha) < 3)
 })

@@ -2,6 +2,7 @@
 
 library(greta)
 library(testthat)
+library(reticulate)
 
 test_that("exponential_censored distribution works correctly", {
   # Simulate data
@@ -37,4 +38,10 @@ test_that("exponential_censored distribution works correctly", {
 
   # Output results
   summary(draws)
+
+  # Print Python errors before the expectation
+  print(py_last_error())
+
+  # Add meaningful expectations
+  expect_true(mean(draws$rate) > 0.4 && mean(draws$rate) < 0.6)
 })
