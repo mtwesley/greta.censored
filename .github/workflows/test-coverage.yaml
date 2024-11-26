@@ -103,17 +103,10 @@ jobs:
         with:
           fail_ci_if_error: ${{ github.event_name != 'pull_request' && true || false }}
           file: ./cobertura.xml
-          plugin: noop
-          disable_search: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          fail_ci_if_error: true
-          files: coverage.xml
-          disable_search: true
+          # plugin: noop
           verbose: true
+          # disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Show testthat output
         if: always()
