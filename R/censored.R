@@ -494,7 +494,7 @@ beta_censored_distribution <- R6::R6Class(
 #' @param dim Dimension of the data (optional, defaults to length of `mean`).
 #' @return A greta censored normal distribution node.
 #' @export
-normal_censored <- function(mean, sd, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(rate)) {
+normal_censored <- function(mean, sd, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   if (is.null(tf) || is.null(tfp)) {
     stop(
       "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
@@ -517,7 +517,7 @@ normal_censored <- function(mean, sd, is_censored, censor = "right", lower = NUL
 #' @param dim Dimension of the data (optional, defaults to length of `meanlog`).
 #' @return A greta censored log-normal distribution node.
 #' @export
-lognormal_censored <- function(meanlog, sdlog, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(meanlog)) {
+lognormal_censored <- function(meanlog, sdlog, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   distrib("lognormal_censored", meanlog, sdlog, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
@@ -535,7 +535,7 @@ lognormal_censored <- function(meanlog, sdlog, is_censored, censor = "right", lo
 #' @param dim Dimension of the data (optional, defaults to length of `df`).
 #' @return A greta censored Student's t distribution node.
 #' @export
-student_censored <- function(df, loc, scale, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(df)) {
+student_censored <- function(df, loc, scale, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   if (is.null(tf) || is.null(tfp)) {
     stop(
       "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
@@ -558,7 +558,7 @@ student_censored <- function(df, loc, scale, is_censored, censor = "right", lowe
 #' @param dim Dimension of the data (optional, defaults to length of `shape`).
 #' @return A greta censored gamma distribution node.
 #' @export
-gamma_censored <- function(shape, rate, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(shape)) {
+gamma_censored <- function(shape, rate, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   distrib("gamma_censored", shape, rate, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
@@ -574,7 +574,7 @@ gamma_censored <- function(shape, rate, is_censored, censor = "right", lower = N
 #' @param dim Dimension of the data (optional, defaults to length of `rate`).
 #' @return A greta censored exponential distribution node.
 #' @export
-exponential_censored <- function(rate, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(rate)) {
+exponential_censored <- function(rate, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   if (is.null(tf) || is.null(tfp)) {
     stop(
       "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
@@ -597,7 +597,7 @@ exponential_censored <- function(rate, is_censored, censor = "right", lower = NU
 #' @param dim Dimension of the data (optional, defaults to length of `shape`).
 #' @return A greta censored Weibull distribution node.
 #' @export
-weibull_censored <- function(shape, scale, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(shape)) {
+weibull_censored <- function(shape, scale, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   distrib("weibull_censored", shape, scale, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
@@ -614,7 +614,7 @@ weibull_censored <- function(shape, scale, is_censored, censor = "right", lower 
 #' @param dim Dimension of the data (optional, defaults to length of `scale`).
 #' @return A greta censored Pareto distribution node.
 #' @export
-pareto_censored <- function(scale, alpha, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(scale)) {
+pareto_censored <- function(scale, alpha, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   if (is.null(tf) || is.null(tfp)) {
     stop(
       "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
@@ -637,7 +637,7 @@ pareto_censored <- function(scale, alpha, is_censored, censor = "right", lower =
 #' @param dim Dimension of the data (optional, defaults to length of `alpha`).
 #' @return A greta censored beta distribution node.
 #' @export
-beta_censored <- function(alpha, beta, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(alpha)) {
+beta_censored <- function(alpha, beta, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(is_censored)) {
   if (is.null(tf) || is.null(tfp)) {
     stop(
       "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
