@@ -17,43 +17,30 @@ jobs:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: 'true'
       R_COMPILE_AND_INSTALL_PACKAGES: 'never'
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      CUDA_VISIBLE_DEVICES: 'FALSE'
-      RETICULATE_AUTOCONFIGURE: 'FALSE'
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Homebrew and qpdf (macOS only)
-        if: runner.os == 'macOS'
-        uses: Homebrew/actions/setup-homebrew@master
+      # - name: Install Homebrew and qpdf (macOS only)
+      #   if: runner.os == 'macOS'
+      #   uses: Homebrew/actions/setup-homebrew@master
 
-      - name: Install qpdf (macOS only)
-        if: runner.os == 'macOS'
-        shell: bash
-        run: brew install qpdf
-
-      - name: Install system dependencies
-        if: runner.os == 'Linux'
-        shell: bash
-        run: |
-          . /etc/os-release
-          while read -r cmd
-          do
-            echo "$cmd"
-            sudo $cmd
-          done < <(Rscript -e "writeLines(remotes::system_requirements('$ID-$VERSION_ID'))")
+      # - name: Install qpdf (macOS only)
+      #   if: runner.os == 'macOS'
+      #   shell: bash
+      #   run: brew install qpdf
 
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
-      - name: Cache R packages
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-coverage-{{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: |
-            ${{ runner.os }}-r-coverage-
+      # - name: Cache R packages
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ${{ env.R_LIBS_USER }}
+      #     key: ${{ runner.os }}-r-coverage-{{ hashFiles('**/DESCRIPTION') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-r-coverage-
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -67,28 +54,38 @@ jobs:
             any::devtools
             any::VGAM
 
-      - name: Cache Python environment
-        if: runner.os == 'Linux' || runner.os == 'macOS'
-        uses: actions/cache@v3
-        with:
-          path: ~/.virtualenvs
-          key: ${{ runner.os }}-python-env-coverage-${{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: |
-            ${{ runner.os }}-python-env-coverage-
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          . /etc/os-release
+          while read -r cmd
+          do
+            echo "$cmd"
+            sudo $cmd
+          done < <(Rscript -e "writeLines(remotes::system_requirements('$ID-$VERSION_ID'))")
 
-      - name: Cache Python environment (Windows)
-        if: runner.os == 'Windows'
-        uses: actions/cache@v3
-        with:
-          path: '%LOCALAPPDATA%/r-reticulate'
-          key: ${{ runner.os }}-python-env-${{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: |
-            ${{ runner.os }}-python-env-            
+      # - name: Cache Python environment
+      #   if: runner.os == 'Linux' || runner.os == 'macOS'
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.virtualenvs
+      #     key: ${{ runner.os }}-python-env-coverage-${{ hashFiles('**/DESCRIPTION') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-python-env-coverage-
+
+      # - name: Cache Python environment (Windows)
+      #   if: runner.os == 'Windows'
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: '%LOCALAPPDATA%/r-reticulate'
+      #     key: ${{ runner.os }}-python-env-${{ hashFiles('**/DESCRIPTION') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-python-env-            
 
       - name: Install greta and dependencies
         shell: Rscript {0}
         run: |
-          install.packages("greta", repos = c("https://greta-dev.r-universe.dev", "https://cloud.r-project.org"))
           library(greta)
           install_greta_deps(timeout = 120)
 
