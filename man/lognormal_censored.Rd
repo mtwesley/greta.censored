@@ -11,7 +11,7 @@ lognormal_censored(
   censor = "right",
   lower = NULL,
   upper = NULL,
-  dim = length(meanlog)
+  dim = length(is_censored)
 )
 }
 \arguments{

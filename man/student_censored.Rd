@@ -12,7 +12,7 @@ student_censored(
   censor = "right",
   lower = NULL,
   upper = NULL,
-  dim = length(df)
+  dim = length(is_censored)
 )
 }
 \arguments{

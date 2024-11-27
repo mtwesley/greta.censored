@@ -11,7 +11,7 @@ pareto_censored(
   censor = "right",
   lower = NULL,
   upper = NULL,
-  dim = length(scale)
+  dim = length(is_censored)
 )
 }
 \arguments{

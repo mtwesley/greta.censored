@@ -11,7 +11,7 @@ weibull_censored(
   censor = "right",
   lower = NULL,
   upper = NULL,
-  dim = length(shape)
+  dim = length(is_censored)
 )
 }
 \arguments{

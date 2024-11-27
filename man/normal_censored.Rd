@@ -11,7 +11,7 @@ normal_censored(
   censor = "right",
   lower = NULL,
   upper = NULL,
-  dim = length(rate)
+  dim = length(is_censored)
 )
 }
 \arguments{
