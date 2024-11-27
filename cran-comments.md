@@ -23,7 +23,6 @@ All checks passed without errors or warnings.
 - The package depends on the following CRAN packages:
   - `greta (>= 0.4.2)`
   - `R (>= 3.1.0)`
-  - `cli`
   - `glue`
   - `tensorflow (>= 1.14.0)`
 

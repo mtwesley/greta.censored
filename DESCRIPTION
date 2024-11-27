@@ -1,5 +1,5 @@
 Package: greta.censored
-Title: Censored distributions for greta
+Title: Censored Distributions for 'greta'
 Version: 0.1.0
 Authors@R: c(
     person(
@@ -21,16 +21,14 @@ Depends:
     greta (>= 0.4.2),
     R (>= 3.1.0)
 Imports: 
-    cli,
     glue,
-    tensorflow (>= 1.14.0)
+    reticulate,
+    tensorflow (>= 2.7.0)
 Suggests:
     devtools,
     VGAM,
-    covr,
     knitr,
     rmarkdown,
-    spelling,
     testthat (>= 3.1.0),
     roxygen2,
     styler,
@@ -43,6 +41,6 @@ Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-SystemRequirements: Python (>= 2.7.0) with header files and shared
-    library; TensorFlow (v1.14; https://www.tensorflow.org/); TensorFlow
-    Probability (v0.7.0; https://www.tensorflow.org/probability/)
+SystemRequirements: Python (>= 3.7.0) with header files and shared
+    library; TensorFlow (>= v2.0.0; https://www.tensorflow.org/); TensorFlow
+    Probability (v0.8.0; https://www.tensorflow.org/probability/)

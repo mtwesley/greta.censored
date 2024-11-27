@@ -1,14 +1,14 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## greta.censored: Censored distributions for greta
+## greta.censored: Censored Distributions for `greta`
 
 <!-- badges: start -->
 <!-- once you've signed into travis and set it to wath your new repository, you can edit the following badges to point to your repo -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/mtwesley/greta.censored/branch/main/graph/badge.svg)](https://codecov.io/gh/mtwesley/greta.censored?branch=main)
+coverage](https://codecov.io/gh/mtwesley/greta.censored/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mtwesley/greta.censored?branch=main)
 [![R-CMD-check](https://github.com/mtwesley/greta.censored/workflows/R-CMD-check/badge.svg)](https://github.com/mtwesley/greta.censored/actions)
-
 <!-- badges: end -->
 
 ## Overview
@@ -31,7 +31,7 @@ distributions with right, left, and interval censoring:
 You can install the development version of `greta.censored` from GitHub
 with:
 
-```r
+``` r
 # install.packages("devtools")
 devtools::install_github("mtwesley/greta.censored")
 ```
@@ -43,7 +43,7 @@ the `greta.censored` package:
 
 ### Example 1: Censored Normal Distribution
 
-```r
+``` r
 library(greta)
 library(greta.censored)
 
@@ -64,7 +64,7 @@ print(dist)
 
 ### Example 2: Censored Log-Normal Distribution
 
-```r
+``` r
 library(greta)
 library(greta.censored)
 
@@ -85,15 +85,14 @@ print(dist)
 
 ## Code of Conduct
 
-Please note that the greta.censored project is released with a
-[Contributor Code of
-Conduct](https://greta-dev.github.io/greta.censored/CODE_OF_CONDUCT.html).
-By contributing to this project, you agree to abide by its terms.
+Please note that the greta.censored project is released with a [Code of
+Conduct](./CODE_OF_CONDUCT.md). By contributing to this project, you
+agree to abide by its terms.
 
 ## Citation
 
 If you use the `greta.censored` package in your research, please cite it
 as follows:
 
-greta.censored: Censored distributions for greta. R package version
+greta.censored: Censored Distributions for `greta`. R package version
 0.1.0. <https://github.com/mtwesley/greta.censored>
