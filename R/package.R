@@ -1,4 +1,4 @@
-#' @title Censored distributions for greta
+#' @title Censored Distributions for 'greta'
 #' @name greta.censored
 #'
 #' @description Provides additional censored distributions for use with Greta,
