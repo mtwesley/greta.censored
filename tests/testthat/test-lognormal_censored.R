@@ -4,6 +4,11 @@ library(greta)
 library(testthat)
 
 test_that("lognormal_censored distribution works correctly", {
+  if (!reticulate::py_module_available("tensorflow") ||
+      !reticulate::py_module_available("tensorflow_probability")) {
+    skip("Required Python modules are not available for testing.")
+  }
+
   # Simulate data
   set.seed(456)
   n <- 100

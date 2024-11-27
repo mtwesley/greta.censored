@@ -5,6 +5,11 @@ library(testthat)
 library(reticulate)
 
 test_that("beta_censored distribution works correctly", {
+  if (!reticulate::py_module_available("tensorflow") ||
+      !reticulate::py_module_available("tensorflow_probability")) {
+    skip("Required Python modules are not available for testing.")
+  }
+  
   # Simulate data
   set.seed(505)
   n <- 100
