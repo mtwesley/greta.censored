@@ -10,8 +10,21 @@ as.greta_array <- greta:::.internals$greta_arrays$as.greta_array
 # check_x_gte_y <- greta:::.internals$checks$check_x_gte_y
 # check_param_greta_array <- greta:::.internals$checks$check_param_greta_array
 
-tfp <- import("tensorflow_probability")
-tf <- import("tensorflow")
+tf <- NULL
+tfp <- NULL
+
+initialize_tf <- function() {
+  if (is.null(tf) || is.null(tfp)) {
+    if (reticulate::py_module_available("tensorflow") &&
+      reticulate::py_module_available("tensorflow_probability")) {
+      tf <<- reticulate::import("tensorflow", delay_load = TRUE)
+      tfp <<- reticulate::import("tensorflow_probability", delay_load = TRUE)
+    }
+  }
+}
+
+tfp <- import("tensorflow_probability", delay_load = TRUE)
+tf <- import("tensorflow", delay_load = TRUE)
 
 normal_censored_distribution <- R6::R6Class(
   "normal_censored_distribution",
@@ -482,6 +495,12 @@ beta_censored_distribution <- R6::R6Class(
 #' @return A greta censored normal distribution node.
 #' @export
 normal_censored <- function(mean, sd, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(rate)) {
+  if (is.null(tf) || is.null(tfp)) {
+    stop(
+      "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
+      "Please install them using `tensorflow::install_tensorflow(extra_packages = 'tensorflow-probability')`."
+    )
+  }
   distrib("normal_censored", mean, sd, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
@@ -517,6 +536,12 @@ lognormal_censored <- function(meanlog, sdlog, is_censored, censor = "right", lo
 #' @return A greta censored Student's t distribution node.
 #' @export
 student_censored <- function(df, loc, scale, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(df)) {
+  if (is.null(tf) || is.null(tfp)) {
+    stop(
+      "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
+      "Please install them using `tensorflow::install_tensorflow(extra_packages = 'tensorflow-probability')`."
+    )
+  }
   distrib("student_censored", df, loc, scale, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
@@ -550,6 +575,12 @@ gamma_censored <- function(shape, rate, is_censored, censor = "right", lower = N
 #' @return A greta censored exponential distribution node.
 #' @export
 exponential_censored <- function(rate, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(rate)) {
+  if (is.null(tf) || is.null(tfp)) {
+    stop(
+      "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
+      "Please install them using `tensorflow::install_tensorflow(extra_packages = 'tensorflow-probability')`."
+    )
+  }
   distrib("exponential_censored", rate, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
@@ -584,6 +615,12 @@ weibull_censored <- function(shape, scale, is_censored, censor = "right", lower 
 #' @return A greta censored Pareto distribution node.
 #' @export
 pareto_censored <- function(scale, alpha, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(scale)) {
+  if (is.null(tf) || is.null(tfp)) {
+    stop(
+      "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
+      "Please install them using `tensorflow::install_tensorflow(extra_packages = 'tensorflow-probability')`."
+    )
+  }
   distrib("pareto_censored", scale, alpha, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
 
@@ -601,5 +638,11 @@ pareto_censored <- function(scale, alpha, is_censored, censor = "right", lower =
 #' @return A greta censored beta distribution node.
 #' @export
 beta_censored <- function(alpha, beta, is_censored, censor = "right", lower = NULL, upper = NULL, dim = length(alpha)) {
+  if (is.null(tf) || is.null(tfp)) {
+    stop(
+      "The required Python modules 'tensorflow' and 'tensorflow_probability' are not available. ",
+      "Please install them using `tensorflow::install_tensorflow(extra_packages = 'tensorflow-probability')`."
+    )
+  }
   distrib("beta_censored", alpha, beta, is_censored, censor = censor, lower = lower, upper = upper, dim = dim)
 }
