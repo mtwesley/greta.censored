@@ -7,13 +7,15 @@ Authors@R: c(
         family = "Wesley",
         email = "mlen.too.wesley@gmail.com", 
         role = c("aut", "cre")
-      )
     )
-Description: Provides additional censored distributions for use with Greta, 
+)
+Description: Provides additional censored distributions for use with 'greta', 
     a probabilistic programming framework for Bayesian modeling. Includes 
     censored versions of Normal, Log-Normal, Student's T, Gamma, Exponential, 
     Weibull, Pareto, and Beta distributions with support for right, left, 
-    and interval censoring.
+    and interval censoring. For details on 'greta', see Golding (2019) 
+    <doi:10.21105/joss.01601>. The methods are implemented using 'TensorFlow' 
+    and 'TensorFlow Probability' for efficient computation.
 License: Apache License 2.0
 URL: https://github.com/mtwesley/greta.censored
 BugReports: https://github.com/mtwesley/greta.censored/issues
