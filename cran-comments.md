@@ -2,39 +2,41 @@
 
 ### Summary
 
-This is the initial submission of the `greta.censored` package, which provides censored distributions for use with Greta, a probabilistic programming framework for Bayesian modeling.
+This is the initial submission of the 'greta.censored' package, which provides censored distributions for use with 'greta', a probabilistic programming framework for Bayesian modeling.
 
 ### Changes Made in Response to CRAN Feedback
 
 1. **Installation Errors**
 
-   - Added checks to ensure that `tensorflow` and `tensorflow_probability` are available before use. If unavailable, the package now issues a warning and gracefully fails instead of raising an error.
+   - Added checks to ensure that 'Tensorflow' and 'Tensorflow Probability' are available before use. If unavailable, the package now issues a warning and gracefully fails instead of raising an error.
    - Tested installation in environments without TensorFlow to confirm graceful degradation.
 
-2. **VignetteBuilder Field**
-
-   - Prebuilt vignettes have been added to the package to address the NOTE regarding the `VignetteBuilder` field in `DESCRIPTION`.
-
-3. **Invalid URLs**
+2. **Invalid URLs**
 
    - Updated the Codecov URL in `README.md` to `https://app.codecov.io/gh/mtwesley/greta.censored?branch=main`.
    - Fixed or removed the broken Code of Conduct URL. If unavailable, a relative link to `CODE_OF_CONDUCT.md` is now used.
 
-4. **Title Field in DESCRIPTION**
+3. **Title Field in DESCRIPTION**
 
-   - Updated the Title field in `DESCRIPTION` to use title case: `"Censored Distributions for Greta"`.
+   - Updated the Title field in `DESCRIPTION` to: `'Censored Distributions for greta'`, preserving the lowercase for 'greta' as used in its official documentation.
 
-5. **Spelling Issues**
+4. **Spelling Issues**
 
-   - Confirmed that flagged terms such as `Weibull` and `greta` are intentional and correct. Added these to the `.aspell` dictionary for future checks.
+   - Confirmed that flagged terms such as `Weibull` and `greta` are intentional and correct. Added these to the WORDLIST file for consistency with future checks.
 
-6. **Namespace and Dependencies**
+5. **Namespace and Dependencies**
 
    - Explicitly declared all necessary imports from `reticulate` in the `NAMESPACE` file.
    - Removed unused dependencies (`cli` and `rlang`) from the `DESCRIPTION` file.
 
-7. **Global Variable**
+6. **Global Variable**
+
    - Declared `rate` as a global variable to address the NOTE regarding its undefined use in the `normal_censored` function.
+
+7. **References in DESCRIPTION**
+
+   - Added a reference to 'greta' using the correct citation: 
+     `Golding (2019) <doi:10.21105/joss.01601>`.
 
 ### Skipped Tests
 
