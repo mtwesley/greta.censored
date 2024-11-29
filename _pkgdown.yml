@@ -8,10 +8,8 @@ home:
 navbar:
   structure:
     left:
-      - text: Reference
-        href: reference/index.html
-      - text: Articles
-        href: articles/index.html
+      - Reference
+      - Articles
 
 template:
   params:
