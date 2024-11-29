@@ -1,6 +1,10 @@
 home:
   title: greta.censored
   description: Censored Distributions for 'greta'
+  links:
+    - text: "Install from CRAN"
+      href: "https://CRAN.R-project.org/package=greta.censored"
+
 navbar:
   structure:
     left:
@@ -8,3 +12,18 @@ navbar:
         href: reference/index.html
       - text: Articles
         href: articles/index.html
+
+template:
+  params:
+    bootswatch: cerulean
+  footer:
+    links:
+      - text: "GitHub"
+        href: "https://github.com/mtwesley/greta.censored"
+      - text: "CRAN"
+        href: "https://CRAN.R-project.org/package=greta.censored"
+      - text: "Code of Conduct"
+        href: "https://github.com/mtwesley/greta.censored/blob/main/CODE_OF_CONDUCT.md"
+
+news:
+  one_page: true

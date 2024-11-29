@@ -8,9 +8,9 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     env:
-      RSPM: https://packagemanager.rstudio.com/cran/__linux__/bionic/latest
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/jammy/latest
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
@@ -27,14 +27,16 @@ jobs:
           saveRDS(pak::pkg_deps("local::.", dependencies = TRUE), ".github/r-depends.rds")
         shell: Rscript {0}
 
-      - name: Restore R package cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ env.R_LIBS_USER }}/*
-            !${{ env.R_LIBS_USER }}/pak
-          key: ubuntu-18.04-${{ steps.install-r.outputs.installed-r-version }}-1-${{ hashFiles('.github/r-depends.rds') }}
-          restore-keys: ubuntu-18.04-${{ steps.install-r.outputs.installed-r-version }}-1-
+      # - name: Restore R package cache
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ${{ env.R_LIBS_USER }}/*
+      #       !${{ env.R_LIBS_USER }}/pak
+      #     key: ubuntu-22.04-${{ steps.install-r.outputs.installed-r-version }}-1-${{ hashFiles('.github/r-depends.rds') }}
+      #     restore-keys: |
+      #       ubuntu-22.04-${{ steps.install-r.outputs.installed-r-version }}-
+      #       ubuntu-22.04-
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
@@ -50,7 +52,8 @@ jobs:
         shell: Rscript {0}
 
       - name: Install package
-        run: R CMD INSTALL .
+        run: pak::pkg_install(".", upgrade = TRUE)
+        shell: Rscript {0}
 
       - name: Build and deploy pkgdown site
         run: |
