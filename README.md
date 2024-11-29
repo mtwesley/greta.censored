@@ -4,8 +4,9 @@
 ## greta.censored: Censored Distributions for `greta`
 
 <!-- badges: start -->
-<!-- once you've signed into travis and set it to wath your new repository, you can edit the following badges to point to your repo -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/greta.censored)](https://CRAN.R-project.org/package=greta.censored)
 [![Codecov test
 coverage](https://codecov.io/gh/mtwesley/greta.censored/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mtwesley/greta.censored?branch=main)
 [![R-CMD-check](https://github.com/mtwesley/greta.censored/workflows/R-CMD-check/badge.svg)](https://github.com/mtwesley/greta.censored/actions)
@@ -24,12 +25,17 @@ distributions with right, left, and interval censoring:
 - Exponential
 - Weibull
 - Pareto
-- Beta.
+- Beta
 
 ## Installation
 
-You can install the development version of `greta.censored` from GitHub
-with:
+You can install the stable version of `greta.censored` from CRAN with:
+
+``` r
+install.packages("greta.censored")
+```
+
+Alternatively, you can install the development version from GitHub with:
 
 ``` r
 # install.packages("devtools")
@@ -85,14 +91,34 @@ print(dist)
 
 ## Code of Conduct
 
-Please note that the greta.censored project is released with a [Code of
+Please note that the `greta.censored` project is released with a [Code
+of
 Conduct](https://github.com/mtwesley/greta.censored/blob/main/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
 ## Citation
 
-If you use the `greta.censored` package in your research, please cite it
-as follows:
+If you use the `greta.censored` package, please cite it as follows:
 
-greta.censored: Censored Distributions for `greta`. R package version
-0.1.0. <https://github.com/mtwesley/greta.censored>
+Wesley M (2024). *greta.censored: Censored Distributions for ‘greta’*. R
+package version 0.1.0,
+<https://CRAN.R-project.org/package=greta.censored>.
+
+Or use the following:
+
+``` r
+citation("greta.censored")
+```
+
+Or in BibTeX format:
+
+    @Manual{
+      title = {greta.censored: Censored Distributions for 'greta'},
+      author = {Mlen-Too Wesley},
+      year = {2024},
+      note = {R package version 0.1.0},
+      url = {https://CRAN.R-project.org/package=greta.censored},
+    }
+
+Alternatively, refer to the package’s CRAN page: [greta.censored on
+CRAN](https://CRAN.R-project.org/package=greta.censored).

@@ -100,10 +100,26 @@ Please note that the `greta.censored` project is released with a [Code of Conduc
 
 ## Citation
 
-If you use the `greta.censored` package in your research, please cite it as follows:
+If you use the `greta.censored` package, please cite it as follows:
+
+Wesley M (2024). _greta.censored: Censored Distributions for 'greta'_. R package version 0.1.0, <https://CRAN.R-project.org/package=greta.censored>.
+
+Or use the following:
 
 ```r
 citation("greta.censored")
+```
+
+Or in BibTeX format:
+
+```
+@Manual{
+  title = {greta.censored: Censored Distributions for 'greta'},
+  author = {Mlen-Too Wesley},
+  year = {2024},
+  note = {R package version 0.1.0},
+  url = {https://CRAN.R-project.org/package=greta.censored},
+}
 ```
 
 Alternatively, refer to the package's CRAN page: [greta.censored on CRAN](https://CRAN.R-project.org/package=greta.censored).
